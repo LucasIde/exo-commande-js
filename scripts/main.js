@@ -31,13 +31,15 @@ class commande {
 	}
 }
 
+let timeout;
+
 // ==============================
 // 🎊 Fonctionnalités
 // ==============================
 
-function print(commande) {
+function print(commande, index) {
 	const div = document.createElement("div");
-	div.innerHTML = commande.display();
+	div.innerHTML = `${commande.display()} <button data-index="${index}" class="delete">❌</button>`;
 	list.append(div);
 }
 
@@ -53,22 +55,56 @@ function resetValue() {
 	nom.value = "";
 	price.value = "";
 	quantity.value = "";
+	nom.select();
+}
+
+function printAll() {
+	list.innerHTML = '';
+	let i = 0;
+	tabCommande.forEach((commande) => {
+		print(commande, i++);
+	});
+}
+
+function printEmpty() {
+	list.innerHTML = "<div>(☞ﾟヮﾟ)☞ le panier est vide ☜(ﾟヮﾟ☜)</div>"
 }
 
 // ==============================
 // 🧲 Événements
 // ==============================
 
+printEmpty();
+
 btn.addEventListener("click", (e) => {
 	e.preventDefault();
+    clearTimeout(timeout);
 	error.innerHTML = '';
 	if (nom.value && price.value && quantity.value){
+		if(tabCommande.length == 0){
+			list.innerHTML="";
+		}
 		tabCommande.push(new commande(nom.value, price.value, quantity.value));
-		print(tabCommande[tabCommande.length-1]);
+		console.log(tabCommande)
+		print(tabCommande[tabCommande.length-1], tabCommande.length-1);
 		changeTot();
 	}
 	else {
 		error.innerHTML = `commande incomplète`;
+    	timeout = setTimeout(`error.innerHTML = ""`, 3000);
 	}
 	resetValue();
+})
+
+list.addEventListener("click", (e) => {
+	e.preventDefault();
+	if (e.target.matches("button.delete")) {
+		let index = e.target.dataset.index;
+		tabCommande.splice(index, 1);
+		printAll();
+		changeTot();
+		if (tabCommande.length == 0 ){
+			printEmpty()
+		}
+	}
 })

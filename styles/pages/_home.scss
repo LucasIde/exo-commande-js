@@ -1,16 +1,32 @@
 body {
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+	background-color: #004413;
+}
+
+img{
+	width: 300px;
+	display: block;
+	margin: auto;
 }
 
 form {
+	margin: 10vh auto 0;
+	text-align: center;
+	max-width: 40%;
 	& > * {
 		margin: 1rem 0;
 	}
 }
+
+.delete {
+	background-color: #fdc600;
+	border: none;
+}
+
+.list > *{
+	background-color: #fdc600;
+	margin: 5px 0;
+}
+
 .total {
 	text-align: center;
 }
